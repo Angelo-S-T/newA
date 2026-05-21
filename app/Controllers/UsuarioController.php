@@ -9,20 +9,19 @@ class UsuarioController extends BaseController
 {
     public function index()
     {
-        //
+        return view('welcome_message');
     }
 
     public function validar()
     {
-        $usuario = new UsuarioModel();
-
-        $email=$this->request->getPost('email');
-        $senha=$this->request->getPost('senha');
-
-        if($usuario[email]==$email){
-            if($usuario[senha]==$senha){
-                return view('dashboard');
-            }
+        $usuarioModel = new UsuarioModel();
+        $emailPasado = $this->request->getPost('email');
+        $senhaPasada = $this->request->getPost('senha');
+        $usuario = $usuarioModel->where('email', $emailPasado)->first();
+        if($usuario &&$senhaPassada == $usuario['senha']){
+            return view('dashboard', ['usuario' => $usuario]);
         }
+           
+        return redirect()->back()->with('erro', 'E-mail ou senha inválidos');
     }
 }
